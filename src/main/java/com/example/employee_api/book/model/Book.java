@@ -2,7 +2,9 @@ package com.example.employee_api.book.model;
 import com.example.employee_api.author.model.Author;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
+import com.example.employee_api.category.model.Category;
+import java.util.ArrayList;
+import java.util.List;
 @Entity
 @Table(name="book")
 public class Book {
@@ -15,8 +17,23 @@ public class Book {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="author_id")
     private Author author;
+    @ManyToMany
+    @JoinTable(
+            name = "book_category",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private List<Category> categories = new ArrayList<>();
 
     public Book() {
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 
     public Long getId() {
