@@ -3,6 +3,10 @@ package com.example.employee_api.order.repository;
 import com.example.employee_api.order.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import com.example.employee_api.order.model.dto.OrderSummary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
@@ -24,4 +28,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
        )
        """)
     List<Order> findHighValueOrders();
+    @Query("select new com.example.employee_api.order.model.dto.OrderSummary(o.orderCode, o.customerName, o.totalPrice) from Order o")
+    Page<OrderSummary> findAllAndPagination(Pageable pageable);
 }

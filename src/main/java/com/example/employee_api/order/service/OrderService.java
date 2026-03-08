@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import com.example.employee_api.order.model.dto.OrderSummary;
+import com.example.employee_api.order.model.dto.PaginationResponse;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -43,5 +46,17 @@ public class OrderService {
     }
     public List<Order> getHighValueOrders(){
         return orderRepository.findHighValueOrders();
+    }
+    public PaginationResponse findAllAndPagination(Pageable pageable) {
+
+        Page<OrderSummary> page = orderRepository.findAllAndPagination(pageable);
+
+        PaginationResponse response = new PaginationResponse();
+        response.setData(page.getContent());
+        response.setTotalPage(page.getTotalPages());
+        response.setTotalElement(page.getTotalElements());
+        response.setCurrentPage(page.getNumber());
+
+        return response;
     }
 }

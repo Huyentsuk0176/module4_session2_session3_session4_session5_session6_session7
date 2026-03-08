@@ -4,7 +4,9 @@ import com.example.employee_api.order.model.Order;
 import com.example.employee_api.order.service.OrderService;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-
+import com.example.employee_api.order.model.dto.PaginationResponse;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
@@ -42,5 +44,13 @@ public class OrderController {
     @GetMapping("/high-value")
     public List<Order> getHighValueOrders(){
         return orderService.getHighValueOrders();
+    }
+    @GetMapping("/findAllAndSearch")
+    public PaginationResponse findAllAndSearch(
+            @RequestParam int page,
+            @RequestParam int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+        return orderService.findAllAndPagination(pageable);
     }
 }
